@@ -12,3 +12,113 @@ https://github.com/uf-hobi-informatics-lab/ClinicalTransformerNER
 Transformer models with named entity recognition in clinical trial eligibility criteria
 https://github.com/ctgatecci/Clinical-trial-eligibility-criteria-NER
 Paper: https://dl.acm.org/doi/pdf/10.1145/3459930.3469560
+
+
+NATURAL LANGUAGE TO SQL
+-----------------------
+	https://towardsdatascience.com/natural-language-to-sql-use-it-on-your-own-database-d4cd5784d081
+
+	- [Text-to-SQL] Learning to query tables with natural language
+	https://towardsdatascience.com/text-to-sql-learning-to-query-tables-with-natural-language-7d714e60a70d
+
+
+	- Editing-Based SQL Query Generation for Cross-Domain Context-Dependent Questions
+	- EditSQL
+	https://arxiv.org/abs/1909.00786
+
+	- A Comparative Survey of Recent Natural Language Interfaces for Databases
+	https://arxiv.org/pdf/1906.08990.pdf
+
+	- RAT-SQL: Relation-Aware Schema Encoding and Linking for Text-to-SQL Parsers
+	https://arxiv.org/pdf/1911.04942.pdf
+
+	-IR Net + BERT
+	- Towards Complex Text-to-SQL in Cross-Domain Database with Intermediate Representation
+	https://arxiv.org/pdf/1905.08205.pdf
+
+
+COMPLEX QA USING KNOWLEDGE GRAPHS
+---------------------------------
+	Mikhail Galkin - Complex Question Answering over Knowledge Graphs
+	https://www.youtube.com/watch?v=hjCO_7nSqzA
+
+
+	https://github.com/heathersherry/Knowledge-Graph-Tutorials-and-Papers/blob/master/topics/Knowledge%20Graph%20Question%20Answering%20(KGQA).md
+
+	- Complex Knowledge Base Question Answering: A Survey 2021
+	https://arxiv.org/pdf/2108.06688v1.pdf
+
+
+	- A Survey on Complex Question Answering over Knowledge Base: Recent Advances and Challenges
+	https://arxiv.org/pdf/2007.13069.pdf
+
+
+	- Template-Based Question Answering over Linked Data using Recursive Neural Networks (Thesis)
+	https://core.ac.uk/download/pdf/195379916.pdf
+
+
+	- A Guided Template-Based Question Answering System over Knowledge Graphs
+	http://ceur-ws.org/Vol-2262/ekaw-demo-20.pdf
+
+
+	- Question Answering over Knowledge Graphs with Neural Machine Translation and Entity Linking
+	https://arxiv.org/abs/2107.02865
+
+
+	- Template-based Question Answering using Recursive Neural Networks
+	https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9364639
+
+
+NAMED ENTITY RECOGNITION AND WORD EMBEDDINGS
+--------------------------------------------
+
+	NAMED ENTITY RECOGNITION
+	________________________
+
+	https://towardsdatascience.com/named-entity-recognition-with-bert-in-pytorch-a454405e0b6a
+
+	https://github.com/umar1997/MBZUAI/blob/main/NLP%20702/Assignments/2.%20Named%20Entity%20Recognition%20(BERT)/Named_Enitity_Recognition_with_BERT.ipynb
+
+
+	https://colab.research.google.com/github/NielsRogge/Transformers-Tutorials/blob/master/BERT/Custom_Named_Entity_Recognition_with_BERT_only_first_wordpiece.ipynb#scrollTo=deLB9HVX5I6F
+
+	https://www.kaggle.com/code/jonofields/bert-ner-sentence/notebook
+
+
+	EMBEDDINGS
+	___________
+
+	BERT
+	https://towardsdatascience.com/3-types-of-contextualized-word-embeddings-from-bert-using-transfer-learning-81fcefe3fe6d
+
+	BiBERT
+	https://github.com/dmis-lab/biobert-pytorch
+	https://huggingface.co/dmis-lab/biobert-base-cased-v1.2
+	Paper: https://arxiv.org/ftp/arxiv/papers/1901/1901.08746.pdf
+
+	MedBERT
+	https://github.com/ZhiGroup/Med-BERT
+	Paper: https://arxiv.org/ftp/arxiv/papers/2005/2005.12833.pdf
+
+	Distance/Cosine Similarity For Embeddings:
+	https://github.com/arushiprakash/MachineLearning/blob/main/BERT%20Word%20Embeddings.ipynb
+
+
+EXTRA INFORMATION
+------------------
+
+	# Negation Detection 
+	NegBERT: 
+	https://github.com/adityak6798/Transformers-For-Negation-and-Speculation/blob/master/Transformers_for_Negation_and_Speculation.ipynb HuggingFace = https://huggingface.co/bvanaken/clinical-assertion-negation-bert?text=The+patient+recovered+during+the+night+and+now+denies+any+%5Bentity%5D+shortness+of+breath+%5Bentity%5D. 
+
+	# Fine Tuning Pretrained Models with Hugging Face 
+	https://towardsdatascience.com/fine-tuning-pretrained-nlp-models-with-huggingfaces-trainer-6326a4456e7b 
+
+	# Criteria2Query https://github.com/OHDSI/Criteria2Query #Text2SQL https://towardsdatascience.com/text-to-sql-learning-to-query-tables-with-natural-language-7d714e60a70d 
+	https://towardsdatascience.com/natural-language-to-sql-use-it-on-your-own-database-d4cd5784d081 https://paperswithcode.com/task/text-to-sqls 
+
+	# Models/Papers 
+	https://paperswithcode.com/paper/content-enhanced-bert-based-text-to-sql https://paperswithcode.com/paper/rat-sql-relation-aware-schema-encoding-and-1 https://paperswithcode.com/paper/sqlnet-generating-structured-queries-from # Text-to-SQL # Generation for Question Answering on Electronic Medical Record https://github.com/wangpinggl/TREQS chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://dmkd.cs.vt.edu/papers/WWW20.pdf 
+
+	# WikiSQL Train Data 
+	https://github.com/dadashkarimi/seq2sql/blob/master/data/wikisql/wikisql_train1000.tsv
