@@ -1,0 +1,14 @@
+Dataset Information:
+Created By: https://github.com/WengLab-InformaticsResearch/CHIA
+Article: https://www.nature.com/articles/s41597-020-00620-0
+Data: https://figshare.com/articles/dataset/Chia_Annotated_Datasets/11855817
+OMOP CDM: https://ohdsi.github.io/CommonDataModel/
+Interactive ODHSI DB: https://athena.ohdsi.org/search-terms/terms?domain=Measurement
+DB Schema: https://ohdsi.github.io/CommonDataModel/cdm53.html
+
+Preprocessing Help:
+https://github.com/uf-hobi-informatics-lab/ClinicalTransformerNER
+
+Transformer models with named entity recognition in clinical trial eligibility criteria
+https://github.com/ctgatecci/Clinical-trial-eligibility-criteria-NER
+Paper: https://dl.acm.org/doi/pdf/10.1145/3459930.3469560
