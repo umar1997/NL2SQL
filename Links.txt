@@ -14,6 +14,9 @@ https://github.com/ctgatecci/Clinical-trial-eligibility-criteria-NER
 Paper: https://dl.acm.org/doi/pdf/10.1145/3459930.3469560
 
 
+Knowledge Graph:
+https://www.kaggle.com/code/pavansanagapati/knowledge-graph-nlp-tutorial-bert-spacy-nltk/notebook
+
 NATURAL LANGUAGE TO SQL
 -----------------------
 	https://towardsdatascience.com/natural-language-to-sql-use-it-on-your-own-database-d4cd5784d081

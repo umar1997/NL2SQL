@@ -25,6 +25,7 @@ class Data_Preparation:
         self.relation_type = relation_type
         self.ignore_files = []
         self.input_files = []
+        self.globalEntities = set()
         
         print('Data_Preparation Initialized...')
         
@@ -119,6 +120,7 @@ class Data_Preparation:
                         term[1] = str(min([int(v) for v in term[1:]]))
                     else:
                         term = line.strip().split('\t')[1].split()
+                    self.globalEntities.add(term[0])
                     
                     if (self.entity_types != None) and (term[0] not in self.entity_types): continue
                     if int(term[-1]) <= int(term[1]):
@@ -178,6 +180,12 @@ class Data_Preparation:
                     entities= [self.checkEntityValue(e) for e in entities]
                     entities = [e for e in entities if e in uniqueEntity]
                     entities = ' '.join(entities)
+                    match = re.findall(r'^T[0-9]+ T[0-9]+$',entities)
+                    if len(match):
+                        pass
+                    else:
+                        continue
+                    assert len(entities.split()) == 2
                     relations.append((rel, rel_type, entities))
 
         return relations
@@ -325,7 +333,7 @@ class Data_Preparation:
         
         df = self.run(files_name)
         return df
-       
+      
 if __name__ == '__main__':
     print('Preparing Data...')
     files = ['Chia_w_scope', 'Chia_wo_scope']
