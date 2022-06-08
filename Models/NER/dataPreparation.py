@@ -1,15 +1,14 @@
 import numpy as np 
 import pandas as pd
 
-Paths = {
-    'Data': './../../Data/',
-    'Chia_w_scope': './../../Data/chia_with_scope/',
-    'Chia_wo_scope': './../../Data/chia_without_scope/',
-}
-
 
 class Data_Preprocessing:
-    def __init__(self, Paths):
+    def __init__(self,):
+        Paths = {
+            'Data': './../../Data/',
+            'Chia_w_scope': './../../Data/chia_with_scope/',
+            'Chia_wo_scope': './../../Data/chia_without_scope/',
+        }
         self.path = Paths
 
 
@@ -91,7 +90,7 @@ class Data_Preprocessing:
         return tokens, tags, tag_idx, tag_values
 
 if __name__ == '__main__':
-    dataPreprocessing = Data_Preprocessing(Paths)
+    dataPreprocessing = Data_Preprocessing()
     tokens, tags, tag_idx, tag_values = dataPreprocessing.main()
     print(tag_idx)
     print('-'*20)
