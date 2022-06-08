@@ -1,2 +1,5 @@
 Data/chia_with_scope/
 Data/chia_without_scope/
+Models/NER/Log_Files/*
+**/__pycache__
+**/.ipynb_checkpoints
