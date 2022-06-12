@@ -52,7 +52,6 @@ class Training:
 
         dataPreprocessing = Data_Preprocessing()
         tokens, tags, tag_idx, tag_values = dataPreprocessing.main()
-        print('     Data Preprocessing Successfully Completed')
         self.logger_progress.critical('Data Preprocessing Completed')
         self.tokens, self.tags, self.tag_idx, self.tag_values = tokens, tags, tag_idx, tag_values
 
@@ -62,11 +61,9 @@ class Training:
         # print('Tags: {}'.format(tags[0]))
         # print('Attention Mask: {}'.format(attention_masks[0]))
         # print('Lengths Matching: {}, {}, {}'.format(len(input_ids[0]), len(tags[0]), len(attention_masks[0])))
-        print('     Data Processing Successfully Completed')
         self.logger_progress.critical('Data Processing Completed')
 
         self.input_ids, self.tags, self.attention_masks = input_ids, tags, attention_masks
-        print('     Training Initialized!')
         self.logger_progress.critical('Training Initialized!')
 
     def train_test_split(self,):
@@ -247,7 +244,6 @@ class Training:
         tr_input, val_input, tr_tag, val_tag, tr_masks, val_masks = self.convert_to_tensors(tr_input, val_input, tr_tag, val_tag, tr_masks, val_masks)
         train_dataloader, valid_dataloader = self.data_loader(tr_input, val_input, tr_tag, val_tag, tr_masks, val_masks)
         self.model_init()
-        print('     Model Initialized!')
         self.logger_progress.critical('Model Initialized!')
         optimizer, scheduler = self.optimizer_and_lr_scheduler(train_dataloader)
         self.logger_progress.critical('Starting Training. . .\n')
