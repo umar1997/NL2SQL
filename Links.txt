@@ -72,8 +72,8 @@ COMPLEX QA USING KNOWLEDGE GRAPHS
 	https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9364639
 
 
-NAMED ENTITY RECOGNITION AND WORD EMBEDDINGS
---------------------------------------------
+NAMED ENTITY RECOGNITION
+-------------------------
 
 	NAMED ENTITY RECOGNITION
 	________________________
@@ -82,11 +82,20 @@ NAMED ENTITY RECOGNITION AND WORD EMBEDDINGS
 
 	https://github.com/umar1997/MBZUAI/blob/main/NLP%20702/Assignments/2.%20Named%20Entity%20Recognition%20(BERT)/Named_Enitity_Recognition_with_BERT.ipynb
 
-
+	Custom Named Entity Recognition with BERT (Similar to my repo above)
 	https://colab.research.google.com/github/NielsRogge/Transformers-Tutorials/blob/master/BERT/Custom_Named_Entity_Recognition_with_BERT_only_first_wordpiece.ipynb#scrollTo=deLB9HVX5I6F
 
 	https://www.kaggle.com/code/jonofields/bert-ner-sentence/notebook
 
+	Adding custom layer on top of a hugging face
+	https://towardsdatascience.com/adding-custom-layers-on-top-of-a-hugging-face-model-f1ccdfc257bd
+
+	Token Classification Hugging Face
+	https://colab.research.google.com/github/huggingface/notebooks/blob/master/examples/token_classification.ipynb#scrollTo=n9qywopnIrJH
+
+
+WORD EMBEDDINGS
+----------------
 
 	EMBEDDINGS
 	___________

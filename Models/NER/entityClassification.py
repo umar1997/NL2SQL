@@ -54,6 +54,9 @@ class Training:
         tokens, tags, tag_idx, tag_values = dataPreprocessing.main()
         self.logger_progress.critical('Data Preprocessing Completed')
         self.tokens, self.tags, self.tag_idx, self.tag_values = tokens, tags, tag_idx, tag_values
+        # Tokens and Tags are list of lists
+        # tag_idx is dictionary of encoding and tag value
+        # tag_value is list of all tags (domains) 
 
         dataProc = Data_Processing(tokens, tags, self.tokenizer, tag_idx, self.HYPER_PARAMETERS)
         input_ids, tags, attention_masks = dataProc.getProcessedData()
@@ -335,3 +338,14 @@ python entityClassification.py \
     --log_folder ./Log_Files/ \
     --log_file sample.log
 """
+# python entityClassification.py \
+#     --model_type bert \
+#     --data_dir ./../../Data/Chia_w_scope_data.csv \
+#     --max_seq_length 80 \
+#     --batch_size 16 \
+#     --learning_rate 5e-5 \
+#     --num_epochs 5 \
+#     --adam_epsilon 1e-8 \
+#     --max_grad_norm 1.0 \
+#     --log_folder ./Log_Files/ \
+#     --log_file lr_5e-5.log

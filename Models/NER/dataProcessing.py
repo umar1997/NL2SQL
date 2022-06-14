@@ -15,6 +15,7 @@ class Data_Processing:
         self.tokenized_text = [token_label_pair[0] for token_label_pair in self.tokenized_texts_and_labels]
         self.labels = [token_label_pair[1] for token_label_pair in self.tokenized_texts_and_labels] 
 
+    # this is using Bert's tokenizer on the words that I have tokenized.
     def tokenize_preserve(self,sent,labs):
         tokenized_sentence = []
         labels = []
