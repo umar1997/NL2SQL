@@ -18,8 +18,8 @@ from torch.optim import AdamW
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
 
 import transformers
-from transformers import BertTokenizer, BertConfig
-from transformers import BertForTokenClassification
+from transformers import BertTokenizer, BertConfig, BertForTokenClassification
+from transformers import AutoTokenizer, AutoModel, AutoConfig, AutoModelForTokenClassification
 from transformers import get_linear_schedule_with_warmup
 
 from sklearn.model_selection import train_test_split
@@ -38,14 +38,17 @@ assert pytorch_version >= version.parse('3.0.0'), \
 
 
 class Training:
-    def __init__(self, HYPER_PARAMETERS, logger_progress, logger_results):
+    def __init__(self, checkpoint_tokenizer, checkpoint_model, HYPER_PARAMETERS, logger_progress, logger_results):
         
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         assert self.device == torch.device('cuda')
 
-        self.tokenizer = BertTokenizer.from_pretrained('bert-base-cased', do_lower_case = False)
+        self.checkpoint_tokenizer = checkpoint_tokenizer
+        self.tokenizer = AutoTokenizer.from_pretrained(self.checkpoint_tokenizer, do_lower_case = False)
 
         self.model = None
+        self.checkpoint_model = checkpoint_model
+
         self.logger_progress = logger_progress
         self.logger_results = logger_results
         self.HYPER_PARAMETERS = HYPER_PARAMETERS
@@ -70,10 +73,10 @@ class Training:
         self.logger_progress.critical('Training Initialized!')
 
     def train_test_split(self,):
-        # Get Train Test Split for Inputs and Tags
-        tr_input, val_input, tr_tag, val_tag = train_test_split(self.input_ids,self.tags,random_state=45,test_size=.15) 
+        # Get Train Test Split for Inputs and Tags 
+        tr_input, val_input, tr_tag, val_tag = train_test_split(self.input_ids,self.tags,random_state=self.HYPER_PARAMETERS['RANDOM_SEED'],test_size=self.HYPER_PARAMETERS['TEST_SPLIT']) 
         # Get Split for NER
-        tr_masks, val_masks, _, _ = train_test_split(self.attention_masks, self.input_ids, random_state=45, test_size=.15)
+        tr_masks, val_masks, _, _ = train_test_split(self.attention_masks, self.input_ids, random_state=self.HYPER_PARAMETERS['RANDOM_SEED'], test_size=self.HYPER_PARAMETERS['TEST_SPLIT'])
 
         return tr_input, val_input, tr_tag, val_tag, tr_masks, val_masks
 
@@ -106,9 +109,9 @@ class Training:
         return train_dataloader, valid_dataloader
 
     def model_init(self,):
-        # Getting BERT's pretrained Token Classification model
-        model = BertForTokenClassification.from_pretrained(
-        'bert-base-cased',
+
+        model = AutoModelForTokenClassification.from_pretrained(
+        self.checkpoint_model,
         num_labels=len(self.tag_idx),
         output_attentions = False,
         output_hidden_states = False)
@@ -145,11 +148,12 @@ class Training:
         total_steps = len(train_dataloader) * self.HYPER_PARAMETERS['EPOCHS']
 
         # Create the learning rate scheduler.
-        scheduler = get_linear_schedule_with_warmup(
-            optimizer,
-            num_warmup_steps=0,
-            num_training_steps=total_steps
-        )
+        scheduler = False
+        # scheduler = get_linear_schedule_with_warmup(
+        #     optimizer,
+        #     num_warmup_steps=0,
+        #     num_training_steps=total_steps
+        # )
 
         return optimizer, scheduler
 
@@ -187,7 +191,8 @@ class Training:
                 torch.nn.utils.clip_grad_norm_(parameters=self.model.parameters(), max_norm=self.HYPER_PARAMETERS['MAX_GRAD_NORM'])
                 
                 optimizer.step() # Updates parameters
-                scheduler.step() # Update learning_rate
+                if scheduler:
+                    scheduler.step() # Update learning_rate
                 
             avg_train_loss = total_loss/len(train_dataloader) 
             print('     Average Train Loss For Epoch {}: {}'.format(E, avg_train_loss))
@@ -236,7 +241,7 @@ class Training:
 
             stop = time.time()
             print('     Epoch #{} Duration:{}'.format(E, stop-start))
-            self.logger_results.info('Duration: {}\n'.format(E, stop-start))
+            self.logger_results.info('Duration: {}\n'.format(stop-start))
             E+=1
             print('-'*20)
             time.sleep(3)
@@ -264,8 +269,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # add arguments
-    parser.add_argument("--model_type", default='bert', type=str, required=True,
-                        help="valid values: bert, _, _")
+    parser.add_argument("--model_type", default='bert-base-cased', type=str, required=True,
+                        help="valid values: bert-base-cased, dmis-lab/biobert-v1.1, _")
+    parser.add_argument("--tokenizer_type", default='bert-base-cased', type=str, required=True,
+                        help="valid values: bert-base-cased, _, _")
     parser.add_argument("--data_dir", type=str,
                         help="The input data directory.")
     parser.add_argument("--seed", default=3, type=int,
@@ -274,6 +281,8 @@ if __name__ == '__main__':
                         help="maximum number of tokens allowed in each sentence")
     parser.add_argument("--batch_size", default=16, type=int,
                         help="The batch size for training and evaluation.")
+    parser.add_argument("--val_split", default=0.15, type=float,
+                        help="Train test split for validation split.")
     parser.add_argument("--learning_rate", default=3e-5, type=float,
                         help="The initial learning rate for optimizer.")
     parser.add_argument("--num_epochs", default=3, type=int,
@@ -303,16 +312,24 @@ if __name__ == '__main__':
         "EPOCHS" : global_args.num_epochs,
         "MAX_GRAD_NORM" : global_args.max_grad_norm,
         "LEARNING_RATE" : global_args.learning_rate,
-        "EPSILON" : global_args.adam_epsilon
-        # "TEST_SPLIT": 0.15,
-        # "RANDOM_SEED": 42
+        "EPSILON" : global_args.adam_epsilon,
+        "TEST_SPLIT": global_args.val_split,
+        "RANDOM_SEED": global_args.seed
     }
+
+    seed = global_args.seed
+    torch.cuda.manual_seed_all(seed)
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    # random.seed(seed)
 
     file_name = global_args.log_folder + global_args.log_file
     logger_meta = get_logger(name='META', file_name=file_name, type='meta')
     logger_progress = get_logger(name='PORGRESS', file_name=file_name, type='progress')
     logger_results = get_logger(name='RESULTS', file_name=file_name, type='results')
 
+    logger_meta.warning("TOKENIZER_TYPE: {}".format(global_args.tokenizer_type))
+    logger_meta.warning("MODEL_TYPE: {}".format(global_args.model_type))
     for i, (k, v) in enumerate(HYPER_PARAMETERS.items()):
         if i == (len(HYPER_PARAMETERS) - 1):
             logger_meta.warning("{}: {}\n".format(k, v))
@@ -321,31 +338,63 @@ if __name__ == '__main__':
 
     print('Entity Classification Training')
     print('------------------------------')
-    train = Training(HYPER_PARAMETERS, logger_progress, logger_results)
+    train = Training(global_args.tokenizer_type, global_args.model_type, HYPER_PARAMETERS, logger_progress, logger_results)
     train.run()
 
 
 script = """
-python entityClassification.py \
-    --model_type bert \
+python domainClassification.py \
+    --model_type bert-base-cased \
+    --tokenizer_type bert-base-cased\
     --data_dir ./../../Data/Chia_w_scope_data.csv \
     --max_seq_length 80 \
     --batch_size 16 \
     --learning_rate 3e-5 \
     --num_epochs 3 \
+    --val_split 0.15 \
+    --seed 42 \
     --adam_epsilon 1e-8 \
     --max_grad_norm 1.0 \
     --log_folder ./Log_Files/ \
     --log_file sample.log
 """
-# python entityClassification.py \
-#     --model_type bert \
+# python domainClassification.py \
+#     --model_type fidukm34/biobert_v1.1_pubmed-finetuned-ner-finetuned-ner \
+#     --tokenizer_type fidukm34/biobert_v1.1_pubmed-finetuned-ner-finetuned-ner\
 #     --data_dir ./../../Data/Chia_w_scope_data.csv \
 #     --max_seq_length 80 \
 #     --batch_size 16 \
-#     --learning_rate 5e-5 \
+#     --learning_rate 3e-5 \
 #     --num_epochs 5 \
+#     --val_split 0.15 \
+#     --seed 42 \
 #     --adam_epsilon 1e-8 \
 #     --max_grad_norm 1.0 \
 #     --log_folder ./Log_Files/ \
-#     --log_file lr_5e-5.log
+#     --log_file only_finetuned_pubmed.log
+
+
+# python domainClassification.py \
+#     --model_type microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext \
+#     --tokenizer_type dmis-lab/biobert-v1.1 \
+#     --data_dir ./../../Data/Chia_w_scope_data.csv \
+#     --max_seq_length 80 \
+#     --batch_size 16 \
+#     --learning_rate 3e-5 \
+#     --num_epochs 5 \
+#     --val_split 0.15 \
+#     --seed 42 \
+#     --adam_epsilon 1e-8 \
+#     --max_grad_norm 1.0 \
+#     --log_folder ./Log_Files/ \
+#     --log_file medbert_biobert.log
+
+
+####################################### Different Models
+# dmis-lab/biobert-v1.1
+# bert-base-cased
+# microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext
+
+# fidukm34/biobert_v1.1_pubmed-finetuned-ner-finetuned-ner
+# sciarrilli/biobert-base-cased-v1.2-finetuned-ner (Token Classifcation)
+# emilyalsentzer/Bio_ClinicalBERT
