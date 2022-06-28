@@ -6,6 +6,10 @@ OMOP CDM: https://ohdsi.github.io/CommonDataModel/
 Interactive ODHSI DB: https://athena.ohdsi.org/search-terms/terms?domain=Measurement
 DB Schema: https://ohdsi.github.io/CommonDataModel/cdm53.html
 
+
+
+
+
 Preprocessing Help:
 https://github.com/uf-hobi-informatics-lab/ClinicalTransformerNER
 
@@ -13,9 +17,12 @@ Transformer models with named entity recognition in clinical trial eligibility c
 https://github.com/ctgatecci/Clinical-trial-eligibility-criteria-NER
 Paper: https://dl.acm.org/doi/pdf/10.1145/3459930.3469560
 
-
 Knowledge Graph:
 https://www.kaggle.com/code/pavansanagapati/knowledge-graph-nlp-tutorial-bert-spacy-nltk/notebook
+
+
+
+
 
 NATURAL LANGUAGE TO SQL
 -----------------------
@@ -40,43 +47,9 @@ NATURAL LANGUAGE TO SQL
 	https://arxiv.org/pdf/1905.08205.pdf
 
 
-COMPLEX QA USING KNOWLEDGE GRAPHS
----------------------------------
-	Mikhail Galkin - Complex Question Answering over Knowledge Graphs
-	https://www.youtube.com/watch?v=hjCO_7nSqzA
-
-
-	https://github.com/heathersherry/Knowledge-Graph-Tutorials-and-Papers/blob/master/topics/Knowledge%20Graph%20Question%20Answering%20(KGQA).md
-
-	- Complex Knowledge Base Question Answering: A Survey 2021
-	https://arxiv.org/pdf/2108.06688v1.pdf
-
-
-	- A Survey on Complex Question Answering over Knowledge Base: Recent Advances and Challenges
-	https://arxiv.org/pdf/2007.13069.pdf
-
-
-	- Template-Based Question Answering over Linked Data using Recursive Neural Networks (Thesis)
-	https://core.ac.uk/download/pdf/195379916.pdf
-
-
-	- A Guided Template-Based Question Answering System over Knowledge Graphs
-	http://ceur-ws.org/Vol-2262/ekaw-demo-20.pdf
-
-
-	- Question Answering over Knowledge Graphs with Neural Machine Translation and Entity Linking
-	https://arxiv.org/abs/2107.02865
-
-
-	- Template-based Question Answering using Recursive Neural Networks
-	https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9364639
-
 
 NAMED ENTITY RECOGNITION
 -------------------------
-
-	NAMED ENTITY RECOGNITION
-	________________________
 
 	https://towardsdatascience.com/named-entity-recognition-with-bert-in-pytorch-a454405e0b6a
 
@@ -97,9 +70,6 @@ NAMED ENTITY RECOGNITION
 WORD EMBEDDINGS
 ----------------
 
-	EMBEDDINGS
-	___________
-
 	BERT
 	https://towardsdatascience.com/3-types-of-contextualized-word-embeddings-from-bert-using-transfer-learning-81fcefe3fe6d
 
@@ -116,21 +86,68 @@ WORD EMBEDDINGS
 	https://github.com/arushiprakash/MachineLearning/blob/main/BERT%20Word%20Embeddings.ipynb
 
 
+COMPLEX QA USING KNOWLEDGE GRAPHS
+---------------------------------
+	Mikhail Galkin - Complex Question Answering over Knowledge Graphs
+	https://www.youtube.com/watch?v=hjCO_7nSqzA
+
+
+	https://github.com/heathersherry/Knowledge-Graph-Tutorials-and-Papers/blob/master/topics/Knowledge%20Graph%20Question%20Answering%20(KGQA).md
+
+	- Complex Knowledge Base Question Answering: A Survey 2021
+	https://arxiv.org/pdf/2108.06688v1.pdf
+
+
+	- A Survey on Complex Question Answering over Knowledge Base: Recent Advances and Challenges
+	https://arxiv.org/pdf/2007.13069.pdf
+
+	
+	- Question Answering over Knowledge Graphs with Neural Machine Translation and Entity Linking
+	https://arxiv.org/abs/2107.02865
+
+
+TEMPLATE BASED QA
+---------------------------------
+
+	- Template-Based Question Answering over Linked Data using Recursive Neural Networks (Thesis)
+	https://core.ac.uk/download/pdf/195379916.pdf
+
+
+	- A Guided Template-Based Question Answering System over Knowledge Graphs
+	http://ceur-ws.org/Vol-2262/ekaw-demo-20.pdf
+
+
+	- Template-based Question Answering using Recursive Neural Networks
+	https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9364639
+
+
+
 EXTRA INFORMATION
 ------------------
 
 	# Negation Detection 
 	NegBERT: 
-	https://github.com/adityak6798/Transformers-For-Negation-and-Speculation/blob/master/Transformers_for_Negation_and_Speculation.ipynb HuggingFace = https://huggingface.co/bvanaken/clinical-assertion-negation-bert?text=The+patient+recovered+during+the+night+and+now+denies+any+%5Bentity%5D+shortness+of+breath+%5Bentity%5D. 
+	https://github.com/adityak6798/Transformers-For-Negation-and-Speculation/blob/master/Transformers_for_Negation_and_Speculation.ipynb 
+	HuggingFace = https://huggingface.co/bvanaken/clinical-assertion-negation-bert?text=The+patient+recovered+during+the+night+and+now+denies+any+%5Bentity%5D+shortness+of+breath+%5Bentity%5D. 
 
 	# Fine Tuning Pretrained Models with Hugging Face 
 	https://towardsdatascience.com/fine-tuning-pretrained-nlp-models-with-huggingfaces-trainer-6326a4456e7b 
 
-	# Criteria2Query https://github.com/OHDSI/Criteria2Query #Text2SQL https://towardsdatascience.com/text-to-sql-learning-to-query-tables-with-natural-language-7d714e60a70d 
-	https://towardsdatascience.com/natural-language-to-sql-use-it-on-your-own-database-d4cd5784d081 https://paperswithcode.com/task/text-to-sqls 
+	# Criteria2Query https://github.com/OHDSI/Criteria2Query 
+
+
+	# Text2SQL 
+	https://towardsdatascience.com/text-to-sql-learning-to-query-tables-with-natural-language-7d714e60a70d 
+	https://towardsdatascience.com/natural-language-to-sql-use-it-on-your-own-database-d4cd5784d081 
+	https://paperswithcode.com/task/text-to-sqls 
 
 	# Models/Papers 
-	https://paperswithcode.com/paper/content-enhanced-bert-based-text-to-sql https://paperswithcode.com/paper/rat-sql-relation-aware-schema-encoding-and-1 https://paperswithcode.com/paper/sqlnet-generating-structured-queries-from # Text-to-SQL # Generation for Question Answering on Electronic Medical Record https://github.com/wangpinggl/TREQS chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://dmkd.cs.vt.edu/papers/WWW20.pdf 
+	https://paperswithcode.com/paper/content-enhanced-bert-based-text-to-sql 
+	https://paperswithcode.com/paper/rat-sql-relation-aware-schema-encoding-and-1 
+	https://paperswithcode.com/paper/sqlnet-generating-structured-queries-from 
+	
+	# Text-to-SQL # Generation for Question Answering on Electronic Medical Record 
+	https://github.com/wangpinggl/TREQS chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://dmkd.cs.vt.edu/papers/WWW20.pdf 
 
 	# WikiSQL Train Data 
 	https://github.com/dadashkarimi/seq2sql/blob/master/data/wikisql/wikisql_train1000.tsv

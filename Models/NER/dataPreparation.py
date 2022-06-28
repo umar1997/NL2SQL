@@ -1,5 +1,6 @@
 import numpy as np 
 import pandas as pd
+from sklearn.utils import shuffle
 
 
 class Data_Preprocessing:
@@ -21,14 +22,6 @@ class Data_Preprocessing:
         df['Entities'] = df['Entities'].apply(eval)
 
         return df
-    
-    def create_dataframe(self, globalTokens, globalTags):
-        ner_df = pd.DataFrame()
-        ner_df['Tags'] = pd.Series(globalTags)
-        ner_df['Sentence'] = pd.Series(globalTokens)
-        
-        return ner_df
-
 
     def get_tags_and_tokens(self, df):
         
@@ -53,6 +46,14 @@ class Data_Preprocessing:
         assert len(globalTokens) == len(globalTags) 
 
         return globalTokens, globalTags
+
+    
+    def create_dataframe(self, globalTokens, globalTags):
+        ner_df = pd.DataFrame()
+        ner_df['Tags'] = pd.Series(globalTags)
+        ner_df['Sentence'] = pd.Series(globalTokens)
+        
+        return ner_df
 
     def get_entities_encoding_and_values(self, ner_df):
         entity_count = {}
@@ -80,13 +81,18 @@ class Data_Preprocessing:
         df = self.eval_dataframe(df)
         globalTokens, globalTags = self.get_tags_and_tokens(df)
         ner_df = self.create_dataframe(globalTokens, globalTags)
+
+        # # Shuffling the dataframe
+        # shuffled = shuffle(ner_df)
+        # ner_df = shuffled.reset_index(drop=True)
+
         tag_idx, tag_values = self.get_entities_encoding_and_values(ner_df)
 
-        return globalTokens, globalTags, tag_idx, tag_values
+        return globalTokens, globalTags, tag_idx, tag_values, ner_df
         
 
     def main(self,):
-        tokens, tags, tag_idx, tag_values = self.run()
+        tokens, tags, tag_idx, tag_values, ner_df = self.run()
         return tokens, tags, tag_idx, tag_values
 
 if __name__ == '__main__':
