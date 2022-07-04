@@ -8,9 +8,6 @@ import pandas as pd
 import time
 from tqdm import tqdm, trange
 
-import argparse
-from packaging import version
-
 dir_path = os.path.dirname(os.path.realpath('./../'))
 sys.path.append(dir_path)
 
@@ -18,7 +15,6 @@ import torch
 from torch.optim import AdamW, SGD, lr_scheduler
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
 
-import transformers
 from transformers import BertTokenizer, BertConfig, BertForTokenClassification
 from transformers import AutoTokenizer, AutoModel, AutoConfig, AutoModelForTokenClassification
 from transformers import get_linear_schedule_with_warmup
@@ -29,13 +25,9 @@ from seqeval.metrics import f1_score, accuracy_score
 
 from dataPreparation import Data_Preprocessing
 from dataProcessing import Data_Processing
+from addedLayers import CustomModel
 from evaluationTools import Eval
-from log import get_logger
 
-
-pytorch_version = version.parse(transformers.__version__)
-assert pytorch_version >= version.parse('3.0.0'), \
-    'We now only support transformers version >=3.0.0, but your version is {}'.format(pytorch_version)
 
 class NumpyEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -61,13 +53,17 @@ class Training:
         self.logger_results = logger_results
         self.HYPER_PARAMETERS = HYPER_PARAMETERS
 
-        # MAKE LABELS GENERAL
-        # general_labels = True
-        general_labels = False
+        # MAKE LABELS GENERAL AND ADDED LAYERS
+        # -----------------------------------
+        # self.general_labels = True
+        self.general_labels = self.HYPER_PARAMETERS["GENERAL_LABELS"]
+        self.added_layers = self.HYPER_PARAMETERS["ADDED_LAYERS"]
+        # self.added_layers = False
+
 
         dataPreprocessing = Data_Preprocessing()
         tokens, tags_names, tag_idx, tag_values = dataPreprocessing.main()
-        if general_labels == True:
+        if self.general_labels == True:
             self.tokens, self.tags_names, self.tag_idx, self.tag_values = self.makeGeneralLabels(tokens, tags_names, tag_idx, tag_values)
         else:
             self.tokens, self.tags_names, self.tag_idx, self.tag_values = tokens, tags_names, tag_idx, tag_values
@@ -168,11 +164,14 @@ class Training:
 
     def model_init(self,):
 
-        model = AutoModelForTokenClassification.from_pretrained(
-        self.checkpoint_model,
-        num_labels=len(self.tag_idx),
-        output_attentions = False,
-        output_hidden_states = False)
+        if self.added_layers: # Added Layers is True
+            model = AutoModelForTokenClassification.from_pretrained(
+            self.checkpoint_model,
+            num_labels=len(self.tag_idx),
+            output_attentions = False,
+            output_hidden_states = False)
+        else: # Added Layers is False
+            model = CustomModel(checkpoint=self.checkpoint_model, num_labels=len(self.tag_idx))
 
         model.cuda()
         self.model = model
@@ -357,146 +356,4 @@ class Training:
         self.training_and_validation(train_dataloader, valid_dataloader, optimizer, scheduler)
         self.logger_progress.critical('Training Completed!')
 
-    
 
-import warnings
-if __name__ == '__main__':
-
-    warnings.filterwarnings("ignore")
-
-    # https://github.com/uf-hobi-informatics-lab/ClinicalTransformerNER/blob/master/src/run_transformer_ner.py
-    parser = argparse.ArgumentParser()
-
-    # ADD ARGUEMENTS
-    parser.add_argument("--model_type", default='bert-base-cased', type=str, required=True,
-                        help="valid values: bert-base-cased, dmis-lab/biobert-v1.1, _")
-    parser.add_argument("--tokenizer_type", default='bert-base-cased', type=str, required=True,
-                        help="valid values: bert-base-cased, _, _")
-    parser.add_argument("--data_dir", type=str,
-                        help="The input data directory.")
-    parser.add_argument("--seed", default=3, type=int,
-                        help='random seed')
-    parser.add_argument("--max_seq_length", default=80, type=int,
-                        help="maximum number of tokens allowed in each sentence")
-    parser.add_argument("--batch_size", default=16, type=int,
-                        help="The batch size for training and evaluation.")
-    parser.add_argument("--val_split", default=0.30, type=float,
-                        help="Train test split for validation split.")
-    parser.add_argument("--learning_rate", default=3e-5, type=float,
-                        help="The initial learning rate for optimizer.")
-    parser.add_argument("--num_epochs", default=3, type=int,
-                        help="Total number of training epochs to perform.")
-    parser.add_argument("--adam_epsilon", default=1e-8, type=float,
-                        help="Epsilon for Adam optimizer.")
-    parser.add_argument("--max_grad_norm", default=1.0, type=float,
-                        help="Max gradient norm.")
-    parser.add_argument("--optimizer", default='AdamW', type=str,
-                        help="valid values: AdamW, SGD")
-    parser.add_argument("--scheduler", default='None', type=str,
-                        help="valid values: Linear Warmup, LRonPlateau")
-    parser.add_argument("--log_folder", default='./Log_Files/', type=str,
-                        help="Name of log folder.")
-    parser.add_argument("--log_file", default='sample.log', type=str,
-                        help="Name of log file.")
-
-    global_args = parser.parse_args()
-
-    # MODEL HYPER PARAMETERS
-    HYPER_PARAMETERS = {
-        # "MAX_LEN" : 80, # Max Length of the sentence
-        # "BATCH_SIZE" : 16,
-        # "EPOCHS" : 3,
-        # "MAX_GRAD_NORM" : 1.0,
-        # "LEARNING_RATE" : 3e-5,
-        # "EPSILON" : 1e-8
-
-        "MAX_LEN" : global_args.max_seq_length, 
-        "BATCH_SIZE" : global_args.batch_size,
-        "EPOCHS" : global_args.num_epochs,
-        "MAX_GRAD_NORM" : global_args.max_grad_norm,
-        "LEARNING_RATE" : global_args.learning_rate,
-        "EPSILON" : global_args.adam_epsilon,
-        "TEST_SPLIT": global_args.val_split,
-        "RANDOM_SEED": global_args.seed,
-        "OPTIMIZER": global_args.optimizer,
-        "LR_SCHEDULER": global_args.scheduler,
-    }
-
-    # SEEDS
-    seed = global_args.seed
-    torch.cuda.manual_seed_all(seed)
-    torch.manual_seed(seed)
-    np.random.seed(seed)
-    # random.seed(seed)
-
-    # LOG FILE SET UP
-    file_name = global_args.log_folder + global_args.log_file
-    logger_meta = get_logger(name='META', file_name=file_name, type='meta')
-    logger_progress = get_logger(name='PORGRESS', file_name=file_name, type='progress')
-    logger_results = get_logger(name='RESULTS', file_name=file_name, type='results')
-
-    logger_meta.warning("TOKENIZER_TYPE: {}".format(global_args.tokenizer_type))
-    logger_meta.warning("MODEL_TYPE: {}".format(global_args.model_type))
-    for i, (k, v) in enumerate(HYPER_PARAMETERS.items()):
-        if i == (len(HYPER_PARAMETERS) - 1):
-            logger_meta.warning("{}: {}\n".format(k, v))
-        else:
-            logger_meta.warning("{}: {}".format(k, v))
-
-    # RUN MODEL
-    print('Entity Classification Training')
-    print('------------------------------')
-    train = Training(global_args.tokenizer_type, global_args.model_type, HYPER_PARAMETERS, logger_progress, logger_results)
-    train.run()
-
-
-script = """
-python domainClassification.py \
-    --model_type dmis-lab/biobert-v1.1 \
-    --tokenizer_type dmis-lab/biobert-v1.1 \
-    --data_dir ./../../Data/Chia_w_scope_data.csv \
-    --max_seq_length 80 \
-    --batch_size 16 \
-    --learning_rate 5e-5 \
-    --num_epochs 5 \
-    --val_split 0.30 \
-    --seed 42 \
-    --adam_epsilon 1e-8 \
-    --max_grad_norm 1.0 \
-    --optimizer AdamW \
-    --scheduler LinearWarmup \
-    --log_folder ./Log_Files/ \
-    --log_file biobert_general.log
-"""
-
-# python domainClassification.py \
-#     --model_type dmis-lab/biobert-v1.1 \
-#     --tokenizer_type dmis-lab/biobert-v1.1 \
-#     --data_dir ./../../Data/Chia_w_scope_data.csv \
-#     --max_seq_length 80 \
-#     --batch_size 16 \
-#     --learning_rate 0.01 \
-#     --num_epochs 10 \
-#     --val_split 0.15 \
-#     --seed 42 \
-#     --adam_epsilon 1e-8 \
-#     --max_grad_norm 1.0 \
-#     --optimizer SGD \
-#     --scheduler LinearWarmup \
-#     --log_folder ./Log_Files/ \
-#     --log_file biobert_sgd_lr_0.01.log
-
-####################################### Different Models
-# dmis-lab/biobert-large-cased-v1.1
-
-# dmis-lab/biobert-v1.1
-# bert-base-cased
-# microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext
-
-# fidukm34/biobert_v1.1_pubmed-finetuned-ner-finetuned-ner
-# sciarrilli/biobert-base-cased-v1.2-finetuned-ner (Token Classifcation)
-# emilyalsentzer/Bio_ClinicalBERT
-
-# bionlp/bluebert_pubmed_mimic_uncased_L-24_H-1024_A-16
-# algoprog/mimics-tagging-roberta-base
-# monologg/biobert_v1.1_pubmed
