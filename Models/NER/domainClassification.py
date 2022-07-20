@@ -165,13 +165,13 @@ class Training:
     def model_init(self,):
 
         if self.added_layers: # Added Layers is True
+            model = CustomModel(checkpoint=self.checkpoint_model, num_labels=len(self.tag_idx))
+        else: # Added Layers is False
             model = AutoModelForTokenClassification.from_pretrained(
             self.checkpoint_model,
             num_labels=len(self.tag_idx),
             output_attentions = False,
             output_hidden_states = False)
-        else: # Added Layers is False
-            model = CustomModel(checkpoint=self.checkpoint_model, num_labels=len(self.tag_idx))
 
         model.cuda()
         self.model = model
