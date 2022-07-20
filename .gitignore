@@ -1,6 +1,7 @@
 Data/chia_with_scope/
 Data/chia_without_scope/
-Data/SQL_Data/
+Data/PreparedText2SQL/
+Data/Text2SqlData/
 Models/NER/Log_Files/*
 **/__pycache__
 **/.ipynb_checkpoints
