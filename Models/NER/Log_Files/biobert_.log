@@ -1,0 +1,152 @@
+[WARNING] - META - TOKENIZER_TYPE: dmis-lab/biobert-v1.1
+[WARNING] - META - MODEL_TYPE: dmis-lab/biobert-v1.1
+[WARNING] - META - MAX_LEN: 80
+[WARNING] - META - BATCH_SIZE: 16
+[WARNING] - META - EPOCHS: 5
+[WARNING] - META - MAX_GRAD_NORM: 1.0
+[WARNING] - META - LEARNING_RATE: 5e-05
+[WARNING] - META - EPSILON: 1e-08
+[WARNING] - META - TEST_SPLIT: 0.3
+[WARNING] - META - RANDOM_SEED: 42
+[WARNING] - META - OPTIMIZER: AdamW
+[WARNING] - META - LR_SCHEDULER: LinearWarmup
+[WARNING] - META - GENERAL_LABELS: False
+[WARNING] - META - ADDED_LAYERS: False
+
+[CRITICAL] - PORGRESS - 28-07-2022 17:09:16 - Data Preprocessing Completed
+[CRITICAL] - PORGRESS - 28-07-2022 17:09:23 - Data Processing Completed
+[CRITICAL] - PORGRESS - 28-07-2022 17:09:23 - Training Initialized!
+[CRITICAL] - PORGRESS - 28-07-2022 17:09:30 - Model Initialized!
+[CRITICAL] - PORGRESS - 28-07-2022 17:09:30 - Starting Training. . .
+
+[INFO] - RESULTS - domainClassification.py.<259> - Epoch #1
+[INFO] - RESULTS - domainClassification.py.<290> - Average Train Loss For Epoch 1: 0.28559443101964216
+[INFO] - RESULTS - domainClassification.py.<318> - Average Val Loss For Epoch 1: 0.1792763711537345
+[INFO] - RESULTS - domainClassification.py.<331> - Validation Accuracy: 75.18617903337656%  |  Validation F-1 Score:0.6484039794426893
+[INFO] - RESULTS - domainClassification.py.<335> - Duration: 55.00847601890564
+
+[INFO] - RESULTS - domainClassification.py.<259> - Epoch #2
+[INFO] - RESULTS - domainClassification.py.<290> - Average Train Loss For Epoch 2: 0.15078708316792142
+[INFO] - RESULTS - domainClassification.py.<318> - Average Val Loss For Epoch 2: 0.1655286605138395
+[INFO] - RESULTS - domainClassification.py.<331> - Validation Accuracy: 77.41429734374529%  |  Validation F-1 Score:0.6831634696693222
+[INFO] - RESULTS - domainClassification.py.<335> - Duration: 58.91379451751709
+
+[INFO] - RESULTS - domainClassification.py.<259> - Epoch #3
+[INFO] - RESULTS - domainClassification.py.<290> - Average Train Loss For Epoch 3: 0.11178291620178656
+[INFO] - RESULTS - domainClassification.py.<318> - Average Val Loss For Epoch 3: 0.17055836676667302
+[INFO] - RESULTS - domainClassification.py.<331> - Validation Accuracy: 76.53691922694244%  |  Validation F-1 Score:0.6749583164345906
+[INFO] - RESULTS - domainClassification.py.<335> - Duration: 59.27743458747864
+
+[INFO] - RESULTS - domainClassification.py.<259> - Epoch #4
+[INFO] - RESULTS - domainClassification.py.<290> - Average Train Loss For Epoch 4: 0.084265759550035
+[INFO] - RESULTS - domainClassification.py.<318> - Average Val Loss For Epoch 4: 0.18583368184834215
+[INFO] - RESULTS - domainClassification.py.<331> - Validation Accuracy: 76.30476075617331%  |  Validation F-1 Score:0.6844553673308172
+[INFO] - RESULTS - domainClassification.py.<335> - Duration: 59.39963698387146
+
+[INFO] - RESULTS - domainClassification.py.<259> - Epoch #5
+[INFO] - RESULTS - domainClassification.py.<290> - Average Train Loss For Epoch 5: 0.0641417628933083
+[INFO] - RESULTS - domainClassification.py.<318> - Average Val Loss For Epoch 5: 0.19225854110919824
+[INFO] - RESULTS - domainClassification.py.<331> - Validation Accuracy: 77.25449995477433%  |  Validation F-1 Score:0.6867875081895609
+[INFO] - RESULTS - domainClassification.py.<335> - Duration: 59.50734305381775
+
+[INFO] - RESULTS - domainClassification.py.<347> - Classification Report:
+[INFO] - RESULTS - domainClassification.py.<348> - 
+              precision    recall  f1-score   support
+
+   Condition       0.88      0.91      0.90      3966
+      Device       0.67      0.65      0.66        82
+        Drug       0.89      0.90      0.90      1480
+ Measurement       0.91      0.86      0.88      1077
+    Negation       0.67      0.77      0.71       138
+           O       0.80      0.76      0.78      3175
+ Observation       0.50      0.45      0.47       383
+      Person       0.94      0.80      0.86       281
+   Procedure       0.75      0.81      0.78      1036
+   Qualifier       0.70      0.65      0.68       982
+    Temporal       0.69      0.79      0.73       507
+       Value       0.86      0.89      0.88       779
+
+    accuracy                           0.82     13886
+   macro avg       0.77      0.77      0.77     13886
+weighted avg       0.82      0.82      0.82     13886
+
+[INFO] - RESULTS - domainClassification.py.<349> - Labels: ['Condition', 'Device', 'Drug', 'Measurement', 'Negation', 'O', 'Observation', 'Person', 'Procedure', 'Qualifier', 'Temporal', 'Value']
+[INFO] - RESULTS - domainClassification.py.<350> - Accuracies: [0.91376702 0.64634146 0.90067568 0.85979573 0.76811594 0.76472441
+ 0.44908616 0.79715302 0.80791506 0.64867617 0.78500986 0.89216945]
+[CRITICAL] - PORGRESS - 28-07-2022 17:14:38 - Training Completed!
+[WARNING] - META - TOKENIZER_TYPE: dmis-lab/biobert-v1.1
+[WARNING] - META - MODEL_TYPE: dmis-lab/biobert-v1.1
+[WARNING] - META - MAX_LEN: 80
+[WARNING] - META - BATCH_SIZE: 16
+[WARNING] - META - EPOCHS: 5
+[WARNING] - META - MAX_GRAD_NORM: 1.0
+[WARNING] - META - LEARNING_RATE: 5e-05
+[WARNING] - META - EPSILON: 1e-08
+[WARNING] - META - TEST_SPLIT: 0.3
+[WARNING] - META - RANDOM_SEED: 42
+[WARNING] - META - OPTIMIZER: AdamW
+[WARNING] - META - LR_SCHEDULER: LinearWarmup
+[WARNING] - META - GENERAL_LABELS: False
+[WARNING] - META - ADDED_LAYERS: False
+
+[CRITICAL] - PORGRESS - 28-07-2022 18:16:13 - Data Preprocessing Completed
+[CRITICAL] - PORGRESS - 28-07-2022 18:16:20 - Data Processing Completed
+[CRITICAL] - PORGRESS - 28-07-2022 18:16:20 - Training Initialized!
+[CRITICAL] - PORGRESS - 28-07-2022 18:16:35 - Model Initialized!
+[CRITICAL] - PORGRESS - 28-07-2022 18:16:35 - Starting Training. . .
+
+[INFO] - RESULTS - domainClassification.py.<266> - Epoch #1
+[INFO] - RESULTS - domainClassification.py.<297> - Average Train Loss For Epoch 1: 0.28559443101964216
+[INFO] - RESULTS - domainClassification.py.<325> - Average Val Loss For Epoch 1: 0.1792763711537345
+[INFO] - RESULTS - domainClassification.py.<338> - Validation Accuracy: 75.18617903337656%  |  Validation F-1 Score:0.6484039794426893
+[INFO] - RESULTS - domainClassification.py.<342> - Duration: 54.78270363807678
+
+[INFO] - RESULTS - domainClassification.py.<266> - Epoch #2
+[INFO] - RESULTS - domainClassification.py.<297> - Average Train Loss For Epoch 2: 0.15078708316792142
+[INFO] - RESULTS - domainClassification.py.<325> - Average Val Loss For Epoch 2: 0.1655286605138395
+[INFO] - RESULTS - domainClassification.py.<338> - Validation Accuracy: 77.41429734374529%  |  Validation F-1 Score:0.6831634696693222
+[INFO] - RESULTS - domainClassification.py.<342> - Duration: 56.502535581588745
+
+[INFO] - RESULTS - domainClassification.py.<266> - Epoch #3
+[INFO] - RESULTS - domainClassification.py.<297> - Average Train Loss For Epoch 3: 0.11178291620178656
+[INFO] - RESULTS - domainClassification.py.<325> - Average Val Loss For Epoch 3: 0.17055836676667302
+[INFO] - RESULTS - domainClassification.py.<338> - Validation Accuracy: 76.53691922694244%  |  Validation F-1 Score:0.6749583164345906
+[INFO] - RESULTS - domainClassification.py.<342> - Duration: 56.94768977165222
+
+[INFO] - RESULTS - domainClassification.py.<266> - Epoch #4
+[INFO] - RESULTS - domainClassification.py.<297> - Average Train Loss For Epoch 4: 0.084265759550035
+[INFO] - RESULTS - domainClassification.py.<325> - Average Val Loss For Epoch 4: 0.18583368184834215
+[INFO] - RESULTS - domainClassification.py.<338> - Validation Accuracy: 76.30476075617331%  |  Validation F-1 Score:0.6844553673308172
+[INFO] - RESULTS - domainClassification.py.<342> - Duration: 57.166443824768066
+
+[INFO] - RESULTS - domainClassification.py.<266> - Epoch #5
+[INFO] - RESULTS - domainClassification.py.<297> - Average Train Loss For Epoch 5: 0.0641417628933083
+[INFO] - RESULTS - domainClassification.py.<325> - Average Val Loss For Epoch 5: 0.19225854110919824
+[INFO] - RESULTS - domainClassification.py.<338> - Validation Accuracy: 77.25449995477433%  |  Validation F-1 Score:0.6867875081895609
+[INFO] - RESULTS - domainClassification.py.<342> - Duration: 57.27337098121643
+
+[INFO] - RESULTS - domainClassification.py.<354> - Classification Report:
+[INFO] - RESULTS - domainClassification.py.<355> - 
+              precision    recall  f1-score   support
+
+   Condition       0.88      0.91      0.90      3966
+      Device       0.67      0.65      0.66        82
+        Drug       0.89      0.90      0.90      1480
+ Measurement       0.91      0.86      0.88      1077
+    Negation       0.67      0.77      0.71       138
+           O       0.80      0.76      0.78      3175
+ Observation       0.50      0.45      0.47       383
+      Person       0.94      0.80      0.86       281
+   Procedure       0.75      0.81      0.78      1036
+   Qualifier       0.70      0.65      0.68       982
+    Temporal       0.69      0.79      0.73       507
+       Value       0.86      0.89      0.88       779
+
+    accuracy                           0.82     13886
+   macro avg       0.77      0.77      0.77     13886
+weighted avg       0.82      0.82      0.82     13886
+
+[INFO] - RESULTS - domainClassification.py.<356> - Labels: ['Condition', 'Device', 'Drug', 'Measurement', 'Negation', 'O', 'Observation', 'Person', 'Procedure', 'Qualifier', 'Temporal', 'Value']
+[INFO] - RESULTS - domainClassification.py.<357> - Accuracies: [0.91376702 0.64634146 0.90067568 0.85979573 0.76811594 0.76472441
+ 0.44908616 0.79715302 0.80791506 0.64867617 0.78500986 0.89216945]
+[CRITICAL] - PORGRESS - 28-07-2022 18:21:34 - Training Completed!

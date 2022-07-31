@@ -1,20 +1,10 @@
-import random
-
-import torch
-import numpy as np
-
 # import pytorch_lightning as pl
 import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import DataLoader
-from torch.optim.lr_scheduler import CosineAnnealingLR
 
 
 from transformers import (
-    AdamW,
     T5ForConditionalGeneration,
     T5Tokenizer,
-    get_linear_schedule_with_warmup,
 )
 
 class T5_FineTuner(nn.Module):
@@ -125,9 +115,9 @@ class T5_FineTuner(nn.Module):
         return self.model(
             input_ids,
             attention_mask=attention_mask,
-            decoder_input_ids=decoder_input_ids,
             decoder_attention_mask=decoder_attention_mask,
-            labels=labels,
+            decoder_input_ids = decoder_input_ids,
+            lm_labels=labels,
         )
 
 

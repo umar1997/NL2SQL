@@ -1,5 +1,6 @@
 import os
 import sys
+import warnings
 
 dir_path = os.path.dirname(os.path.realpath('./../'))
 sys.path.append(dir_path)
@@ -24,7 +25,12 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 assert device == torch.device('cuda'), \
     'You are currently running on CPU rather than on CUDA.'
 
+
+torch.cuda.empty_cache()
+
 if __name__ == '__main__':
+
+    warnings.filterwarnings("ignore")
 
     # ADD ARGUEMENTS
     parser = argparse.ArgumentParser()
@@ -58,7 +64,7 @@ if __name__ == '__main__':
     parser.add_argument("--optimizer", default='AdamW', type=str,
                         help="valid values: AdamW, SGD")
     parser.add_argument("--scheduler", default='None', type=str,
-                        help="valid values: Linear Warmup, LRonPlateau")
+                        help="valid values: LinearWarmup, CosineAnnealingLR")
     parser.add_argument("--log_folder", default='./Log_Files/', type=str,
                         help="Name of log folder.")
     parser.add_argument("--log_file", default='sample.log', type=str,
@@ -78,6 +84,7 @@ if __name__ == '__main__':
         "LEARNING_RATE" : global_args.learning_rate,
         "EPSILON" : global_args.adam_epsilon,
         "RANDOM_SEED": global_args.seed,
+        "WEIGHT_DECAY": global_args.weight_decay,
         "MAX_GRAD_NORM" : global_args.max_grad_norm,
         "OPTIMIZER": global_args.optimizer,
         "LR_SCHEDULER": global_args.scheduler,
@@ -103,8 +110,6 @@ if __name__ == '__main__':
     logger_progress = get_logger(name='PORGRESS', file_name=file_name, type='progress')
     logger_results = get_logger(name='RESULTS', file_name=file_name, type='results')
 
-    logger_meta.warning("TOKENIZER_NAME: {}".format(global_args.tokenizer_name))
-    logger_meta.warning("MODEL_NAME: {}".format(global_args.model_name))
     for i, (k, v) in enumerate(HYPER_PARAMETERS.items()):
         if i == (len(HYPER_PARAMETERS) - 1):
             logger_meta.warning("{}: {}\n".format(k, v))
@@ -113,14 +118,19 @@ if __name__ == '__main__':
 
     # RUN MODEL
 
-    from T5_Model import T5_FineTuner
-
     print('T5 Fine-Tuning SQL Generation')
     print('------------------------------')
-    init = T5_FineTuner(HYPER_PARAMETERS)
+
+    ## Training
     # train = Training(HYPER_PARAMETERS, logger_progress, logger_results)
     # train.run()
 
+    ## Inference
+    from testModel import Inference
+    PATH = './model_checkpoints/T5_Fine_Tuned_Epoch_1.pth'
+    INPUT_TEXT = 'Counts of patients taking drug <ARG-DRUG><0> and <ARG-DRUG><1> within <ARG-TIMEDAYS><0>'
+    inference = Inference(HYPER_PARAMETERS, PATH, INPUT_TEXT)
+    inference.run()
 
 # ---------------------------------------------------------------------------------------------
 
@@ -130,23 +140,20 @@ python main.py \
     --tokenizer_name mrm8488/t5-base-finetuned-wikiSQL \
     --data_dir ./../../Data/PreparedText2SQL \
     --max_input_length 256 \
-    --max_output_length 576 \
+    --max_output_length 512 \
     --learning_rate 1e-3 \
     --seed 42 \
     --adam_epsilon 1e-8 \
-    --weight_decay 0.0 \
+    --weight_decay 0.01 \
     --num_epochs 5 \
-    --train_batch_size 128 \
-    --eval_batch_size 256 \
+    --train_batch_size 8 \
+    --eval_batch_size 8 \
     --max_grad_norm 1.0 \
     --optimizer AdamW \
     --scheduler LinearWarmup \
     --log_folder ./Log_Files/ \
-    --log_file finetuned_t5.log
+    --log_file test.log
 """
-
-
-
 
 # extra_model_params = {
 

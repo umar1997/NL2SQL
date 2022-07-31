@@ -26,12 +26,24 @@ Saving and Loading Pytorch Models
 ----------------------------------
 	https://pytorch.org/tutorials/beginner/saving_loading_models.html
 	https://github.com/umar1997/MuBAF/blob/main/BIDAF/BiDAF_Implementation.ipynb
+	https://github.com/umar1997/MBZUAI/blob/main/PyTorch%20(Udemy-HF-Aladdin_Pearson)/Udemy/3.%20Artificial-Neural-Networks/7.%20Recap-Saving-and-Loading-Trained-Models-NO_VIDEO.ipynb
 	
 
 SUMMARY GENERATION WITH T5
 -----------------------
 	https://colab.research.google.com/github/abhimishra91/transformers-tutorials/blob/master/transformers_summarization_wandb.ipynb#scrollTo=1qOEliuKrBqY
 	https://colab.research.google.com/github/huggingface/notebooks/blob/master/examples/summarization.ipynb#scrollTo=EZorj0CZpPzQ
+
+Fine Tuning
+------------
+	FineTuning WikiSQL  
+	https://github.com/patil-suraj/exploring-T5/blob/master/t5_fine_tuning.ipynb
+	https://github.com/amazon-research/nl2sql-omop-cdm/blob/main/src/engine/step4/model_dev/t5_training.py
+	https://huggingface.co/mrm8488/t5-base-finetuned-wikiSQL?text=translate+English+to+SQL%3A+How+many+models+were+finetuned+using+BERT+as+base+model%3F
+
+	FineTuning Summarization  
+	https://towardsdatascience.com/fine-tuning-a-t5-transformer-for-any-summarization-task-82334c64c81
+
 
 
 NATURAL LANGUAGE TO SQL

@@ -76,7 +76,7 @@ if __name__ == '__main__':
         "OPTIMIZER": global_args.optimizer,
         "LR_SCHEDULER": global_args.scheduler,
         "GENERAL_LABELS": False,
-        "ADDED_LAYERS": True
+        "ADDED_LAYERS": False
     }
 
     # SEEDS
@@ -124,7 +124,7 @@ python main.py \
     --optimizer AdamW \
     --scheduler LinearWarmup \
     --log_folder ./Log_Files/ \
-    --log_file biobert_added_layers.log
+    --log_file biobert_blah.log
 """
 
 ####################################### Different Models

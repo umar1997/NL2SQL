@@ -26,6 +26,7 @@ from seqeval.metrics import f1_score, accuracy_score
 from dataPreparation import Data_Preprocessing
 from dataProcessing import Data_Processing
 from addedLayers import CustomModel
+from Ner_Model import NER_FineTuner
 from evaluationTools import Eval
 
 
@@ -167,16 +168,18 @@ class Training:
         if self.added_layers: # Added Layers is True
             model = CustomModel(checkpoint=self.checkpoint_model, num_labels=len(self.tag_idx))
         else: # Added Layers is False
-            model = AutoModelForTokenClassification.from_pretrained(
-            self.checkpoint_model,
-            num_labels=len(self.tag_idx),
-            output_attentions = False,
-            output_hidden_states = False)
+            model = NER_FineTuner(checkpoint_tokenizer=self.checkpoint_tokenizer,
+                checkpoint_model=self.checkpoint_model,
+                num_tags = len(self.tag_idx)
+            )
+            # model = AutoModelForTokenClassification.from_pretrained(
+            # self.checkpoint_model,
+            # num_labels=len(self.tag_idx),
+            # output_attentions = False,
+            # output_hidden_states = False)
 
         model.cuda()
         self.model = model
-
-        # print(self.model)
 
     def optimizer_and_lr_scheduler(self, train_dataloader):
 
@@ -337,6 +340,10 @@ class Training:
             print('-'*20)
             time.sleep(3)
 
+        # Saving Model
+
+        torch.save(self.model.state_dict(), './../Model_Files/ner_model.pt')
+        self.tokenizer.save_pretrained('./../Model_Files/tokenizer/')
 
         CR, labels, acc = Eval(predictions, true_labels, self.tag_values)
         self.logger_results.info('Classification Report:')

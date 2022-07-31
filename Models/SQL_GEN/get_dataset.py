@@ -6,9 +6,12 @@ from nlp import load_dataset
 from torch.utils.data import Dataset
 
 
-class NL2SQL_Dataset(Dataset):
+class CustomDataset(Dataset):
     """
     Custom Dataset Object for DataLoader
+
+    data_split values: Train, Validation, Test
+
     """
 
     def __init__(self, data_split, max_input_length, max_output_length):
@@ -56,7 +59,7 @@ class NL2SQL_Dataset(Dataset):
             Tuple of source and targets (Tokenized/encoded versions).
         """
 
-        input_ = example_batch["Folded_Question"]
+        input_ = "translate English to SQL: " + example_batch["Folded_Question"]
         input_ = input_.replace("<", "[").replace(">", "]")
         target_ = example_batch["Query_Generated"]
         target_ = target_.replace("<", "[").replace(">", "]")
@@ -107,8 +110,10 @@ class NL2SQL_Dataset(Dataset):
         }
 
 def get_dataset_object(data_split, max_input_length, max_output_length):
-
-    return NL2SQL_Dataset(
+    """
+    data_split values: Train, Validation, Test
+    """
+    return CustomDataset(
         data_split=data_split,
         max_input_length= max_input_length,
         max_output_length= max_output_length,
@@ -117,7 +122,7 @@ def get_dataset_object(data_split, max_input_length, max_output_length):
 
 if __name__ == '__main__':
 
-    dataset_obj = NL2SQL_Dataset('Train', 256, 512)
+    dataset_obj = CustomDataset('Train', 256, 512)
     data_split, max_input_length, max_output_length = 'Test', 256, 512
     x = get_dataset_object(data_split, max_input_length, max_output_length)
     print(x)
