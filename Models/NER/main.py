@@ -124,7 +124,7 @@ python main.py \
     --optimizer AdamW \
     --scheduler LinearWarmup \
     --log_folder ./Log_Files/ \
-    --log_file biobert_blah.log
+    --log_file biobert_.log
 """
 
 ####################################### Different Models

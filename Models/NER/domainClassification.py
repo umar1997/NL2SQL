@@ -172,11 +172,6 @@ class Training:
                 checkpoint_model=self.checkpoint_model,
                 num_tags = len(self.tag_idx)
             )
-            # model = AutoModelForTokenClassification.from_pretrained(
-            # self.checkpoint_model,
-            # num_labels=len(self.tag_idx),
-            # output_attentions = False,
-            # output_hidden_states = False)
 
         model.cuda()
         self.model = model

@@ -88,8 +88,8 @@ if __name__ == '__main__':
         "MAX_GRAD_NORM" : global_args.max_grad_norm,
         "OPTIMIZER": global_args.optimizer,
         "LR_SCHEDULER": global_args.scheduler,
-        "FREEZE_ENCODER": True,
-        "FREEZE_EMBEDDINGS": True
+        "FREEZE_ENCODER": False,
+        "FREEZE_EMBEDDINGS": False
     }
 
     # SEEDS
@@ -122,15 +122,8 @@ if __name__ == '__main__':
     print('------------------------------')
 
     ## Training
-    # train = Training(HYPER_PARAMETERS, logger_progress, logger_results)
-    # train.run()
-
-    ## Inference
-    from testModel import Inference
-    PATH = './model_checkpoints/T5_Fine_Tuned_Epoch_1.pth'
-    INPUT_TEXT = 'Counts of patients taking drug <ARG-DRUG><0> and <ARG-DRUG><1> within <ARG-TIMEDAYS><0>'
-    inference = Inference(HYPER_PARAMETERS, PATH, INPUT_TEXT)
-    inference.run()
+    train = Training(HYPER_PARAMETERS, logger_progress, logger_results)
+    train.run()
 
 # ---------------------------------------------------------------------------------------------
 
@@ -150,9 +143,9 @@ python main.py \
     --eval_batch_size 8 \
     --max_grad_norm 1.0 \
     --optimizer AdamW \
-    --scheduler LinearWarmup \
+    --scheduler CosineAnnealingLR \
     --log_folder ./Log_Files/ \
-    --log_file test.log
+    --log_file finetuned_t5_.log
 """
 
 # extra_model_params = {

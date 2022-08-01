@@ -25,7 +25,7 @@ class Training:
         self.HYPER_PARAMETERS = HYPER_PARAMETERS
 
         T5_Model = T5_FineTuner(self.HYPER_PARAMETERS)
-        self.model = T5_Model.model
+        self.model = T5_Model
         self.model.to(self.device)
 
         self.tokenizer = T5_Model.tokenizer
@@ -128,7 +128,6 @@ class Training:
         train_loss=0
 
         self.model.train()
-        CHECK = 1
         for step, batch in enumerate(tqdm(train_dataloader, desc ="Training DataLoader")):
 
             input_ids = batch['source_ids'].to(self.device, dtype = torch.long)
@@ -140,8 +139,6 @@ class Training:
 
             labels = y[:, :].clone().detach()
             labels[y[:, :] == self.tokenizer.pad_token_id] = -100
-            
-            # print(input_ids.shape, attention_mask.shape, decoder_attention_mask.shape, y.shape, decoder_input_ids.shape)
             
             # Forward pass
             outputs = self.model(input_ids=input_ids, attention_mask=attention_mask, decoder_input_ids=decoder_input_ids, decoder_attention_mask=decoder_attention_mask, labels=labels)
@@ -157,19 +154,13 @@ class Training:
             # Preventing exploding grad
             torch.nn.utils.clip_grad_norm_(parameters=self.model.parameters(), max_norm=self.HYPER_PARAMETERS['MAX_GRAD_NORM'])
 
-            # if CHECK == 10:
-            #     break
-            # CHECK+= 1
-
 
         avg_train_loss = train_loss/len(train_dataloader)
         return avg_train_loss, optimizer
 
     def validation_phase(self, valid_dataloader):
         eval_loss = 0
-
-        CHECK = 1
-
+        
         self.model.eval()
         with torch.no_grad():
             for step, batch in enumerate(tqdm(valid_dataloader, desc ="Validation DataLoader")):
@@ -189,10 +180,6 @@ class Training:
                 loss = outputs[0]
 
                 eval_loss += loss.item()
-
-                # if CHECK == 5:
-                #     break
-                # CHECK+= 1
 
         avg_val_loss = eval_loss/len(valid_dataloader)
         return avg_val_loss
@@ -223,16 +210,20 @@ class Training:
             self.logger_results.info('Average Val Loss For Epoch {}: {}'.format(E, avg_val_loss))
             validation_loss_values.append(avg_val_loss)  # Storing loss values to plot learning curve
 
+
             ###################### SAVE MODEL
             self.logger_results.info('Saving Model . . .')
-            torch.save({
-                'epoch': E,
-                'model_state_dict': self.model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict(),
-                'train_loss': avg_train_loss,
-                'valid_loss': avg_val_loss,
-                }, './model_checkpoints/T5_Fine_Tuned_Epoch_{}.pth'.format(E))
 
+            torch.save(self.model.state_dict(), './../Model_Files/sql_gen_model_{}.pt'.format(E))
+            self.tokenizer.save_pretrained('./../Model_Files/T5_tokenizer/')
+
+            # torch.save({
+            #     'epoch': E,
+            #     'model_state_dict': self.model.state_dict(),
+            #     'optimizer_state_dict': optimizer.state_dict(),
+            #     'train_loss': avg_train_loss,
+            #     'valid_loss': avg_val_loss,
+            #     }, './model_checkpoints/T5_Fine_Tuned_Epoch_{}.pth'.format(E))
 
             ######################
             stop = time.time()

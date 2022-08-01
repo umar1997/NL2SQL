@@ -117,7 +117,7 @@ class T5_FineTuner(nn.Module):
             attention_mask=attention_mask,
             decoder_attention_mask=decoder_attention_mask,
             decoder_input_ids = decoder_input_ids,
-            lm_labels=labels,
+            labels=labels,
         )
 
 
