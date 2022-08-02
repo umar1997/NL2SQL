@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Make Data Directory
-DATA_DIR=${PWD}/Data
+DATA_DIR=${PWD}/Raw_Data
 mkdir $DATA_DIR
 
 # Download Data

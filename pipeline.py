@@ -7,6 +7,9 @@ import re
 import torch
 import numpy as np
 
+import argparse
+import warnings
+
 from transformers import AutoTokenizer
 
 from Models.NER.Ner_Model import NER_FineTuner
@@ -173,12 +176,27 @@ def GENERATE_SQL(INPUT, ORIGINAL):
 
 if __name__ == '__main__':
 
+    warnings.filterwarnings("ignore")
+
+    # export CUDA_VISIBLE_DEVICES=0,1
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    ORIGINAL = ''
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input", default='Count of patients with paracetamol and brufen', type=str, required=True,
+                        help="valid values: Any string")
+    global_args = parser.parse_args()
+
+
+    ORIGINAL =global_args.input
     INPUT = ORIGINAL
 
     tokens_, labels_ = NER(INPUT)
     INPUT = PREPROCESS(tokens_, labels_, INPUT)
     OUTPUT = GENERATE_SQL(INPUT, ORIGINAL)
+
+
+script = """
+python pipeline.py \
+    --input 'Count of patients with paracetamol and brufen'
+"""
 
