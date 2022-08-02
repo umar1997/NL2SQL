@@ -98,6 +98,7 @@ python pipeline.py \
     --input 'Count of patients with paracetamol and brufen'
 ```
 ### File Structure
+```
 /
 ├── .gitignore
 ├── activateEnv.sh
@@ -193,3 +194,4 @@ python pipeline.py \
 ├── pipeline.py
 ├── README.md
 └── requirements.txt
+```
