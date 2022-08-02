@@ -147,6 +147,7 @@ python pipeline.py \
 │   ├── Model_Files/
 │   │   ├── ner_model.pt
 │   │   ├── sql_gen_model.pt
+│   │   ├── sql_gen_model_checkpoint.ckpt
 │   │   ├── T5_tokenizer/
 │   │   │   ├── added_tokens.json
 │   │   │   ├── special_tokens_map.json
@@ -179,6 +180,10 @@ python pipeline.py \
 │   │   ├── Model_Differences.ipynb
 │   │   ├── Ner_Model.py
 │   │   └── test_split.json
+│   ├── PL_Model/
+│   │   ├── datasetClass.py
+│   │   ├── inferencerClass.py
+│   │   └── T5PL_Model.py
 │   └── SQL_GEN/
 │       ├── dataPreparation.py
 │       ├── Extra/
