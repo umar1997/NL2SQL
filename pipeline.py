@@ -14,6 +14,7 @@ from transformers import AutoTokenizer
 
 from Models.NER.Ner_Model import NER_FineTuner
 from Models.SQL_GEN.T5_Model import T5_FineTuner
+from Models.PL_Model.inferencerClass import Inferencer
 
 
 
@@ -123,9 +124,9 @@ def PREPROCESS(new_tokens, new_labels, INPUT):
     # print(og_tokens)
     return INPUT
 
-################################################################## SQL GENERATION
+################################################################## SQL GENERATION PYTORCH
 
-def GENERATE_SQL(INPUT, ORIGINAL):    
+def GENERATE_SQL(INPUT):    
     # INPUT = 'Count of patients with <ARG-DRUG><0> and <ARG-DRUG><1>'
     
     HYPER_PARAMS = {
@@ -172,6 +173,14 @@ def GENERATE_SQL(INPUT, ORIGINAL):
 
     return OUTPUT
 
+################################################################## SQL GENERATION PYTORCH LIGHTNING
+def GENERATE_SQL_PL(INPUT):
+
+    inferencer = Inferencer()   
+    output = inferencer(INPUT)
+
+    return output
+
 ################################################################## PIPELINE START
 
 if __name__ == '__main__':
@@ -181,6 +190,7 @@ if __name__ == '__main__':
     # export CUDA_VISIBLE_DEVICES=0,1
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+    PYTORCH_LIGHTNING = True
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", default='Count of patients with paracetamol and brufen', type=str, required=True,
                         help="valid values: Any string")
@@ -192,7 +202,14 @@ if __name__ == '__main__':
 
     tokens_, labels_ = NER(INPUT)
     INPUT = PREPROCESS(tokens_, labels_, INPUT)
-    OUTPUT = GENERATE_SQL(INPUT, ORIGINAL)
+    
+    if PYTORCH_LIGHTNING == True:
+        OUTPUT = GENERATE_SQL_PL(INPUT)
+    else:
+        OUTPUT = GENERATE_SQL(INPUT)
+
+    print('Natural Language Input: {}'.format(ORIGINAL))
+    print('SQL Query Generated: {}'.format(OUTPUT))
 
 
 script = """
