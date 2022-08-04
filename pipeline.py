@@ -1,7 +1,10 @@
 # LINKS:
 # https://github.com/patil-suraj/exploring-T5/blob/master/t5_fine_tuning.ipynb
 # https://github.com/amazon-research/nl2sql-omop-cdm/blob/main/src/engine/step4/model_dev/t5_evaluation.py
-
+import os
+import sys
+path = os.path.realpath('./Models/PL_Model/')
+sys.path.append(path)
 
 import re
 import torch
@@ -40,8 +43,11 @@ def removePunctuation(word):
 ################################################################## NAMED ENTITY RECOGNITION
 
 def NER(INPUT):
+
     # INPUT = 'Count of patients with paracetamol and brufen'
     
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
     txt = cleanInput(INPUT) 
     tokens = [removePunctuation(w) for w in txt.split()]
     input_ = ' '.join(tokens)
@@ -195,7 +201,8 @@ def GENERATE_SQL(INPUT):
 ################################################################## SQL GENERATION PYTORCH LIGHTNING
 def GENERATE_SQL_PL(INPUT):
 
-    inferencer = Inferencer()   
+    model_path = './Models/Model_Files/sql_gen_model_checkpoint.ckpt' 
+    inferencer = Inferencer(model_path)
     output = inferencer(INPUT)
     print(output)
 

@@ -1,16 +1,7 @@
-import os
-import sys
-path = os.path.realpath('./Models/PL_Model/')
-dir_path = os.path.dirname(path)
-# print(path)
-# print(dir_path)
-# /home/umar.salman/G42/NLP2SQL/Models/PL_Model
-# /home/umar.salman/G42/NLP2SQL/Models
-sys.path.append(dir_path)
-
 import re
 import argparse
-from PL_Model.T5PL_Model import T5FineTuner
+
+from T5PL_Model import T5FineTuner
 import torch
 
 
@@ -18,9 +9,9 @@ PAD_P = re.compile("<pad> |</s>")
 
 
 class Inferencer(object):
-    def __init__(self,):
+    def __init__(self, path):
 
-        model_path = ('./Models/Model_Files/sql_gen_model_checkpoint.ckpt')
+        model_path = (path)
         checkpoint = torch.load(model_path)
         args = argparse.Namespace(**checkpoint["hyper_parameters"])
         self.model = T5FineTuner(args)

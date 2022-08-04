@@ -9,7 +9,7 @@ import numpy as np
 import pytorch_lightning as pl
 from torch.utils.data import DataLoader
 from typing import Callable, Dict, Iterable, List, Tuple, Union
-from PL_Model.datasetClass import get_dataset
+from datasetClass import get_dataset
 from torch.optim.lr_scheduler import CosineAnnealingLR
 
 
