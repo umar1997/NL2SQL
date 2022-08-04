@@ -76,6 +76,12 @@ def NER(INPUT):
 
     assert len(new_tokens) == len(new_labels)
 
+    new_tokens = new_tokens[1:-1]
+    new_labels = new_labels[1:-1]
+
+    for token, label in zip(new_tokens, new_labels): # Showing labels against the words
+        print('{}\t{}'.format(label,token))
+
     # print(new_tokens)
     # print(new_labels)
     return new_tokens, new_labels
@@ -87,9 +93,6 @@ def PREPROCESS(new_tokens, new_labels, INPUT):
     # new_tokens = ['[CLS]', 'Count', 'of', 'patients', 'with', 'paracetamol', 'paracetamol2', 'and', 'brufen', 'brufen2', 'brufen3',  'and', 'severe', 'headache','[SEP]']
     # new_labels= ['O', 'O', 'O', 'O', 'O', 'B-Drug', 'I-Drug', 'O', 'B-Drug', 'I-Drug', 'I-Drug', 'O', 'B-Condition', 'I-Condition', 'O']
     # INPUT = ' '.join(new_tokens)
-
-    new_tokens = new_tokens[1:-1]
-    new_labels = new_labels[1:-1]
 
     assert len(new_tokens) == len(new_labels)
 
@@ -104,14 +107,17 @@ def PREPROCESS(new_tokens, new_labels, INPUT):
     assert len(TOKENS) == len(LABELS)
 
     entity2count = {}
+    entity2value = {}
     arg2token = {}
     arg_value = '<ARG-#><*>'
     for i, label in enumerate(LABELS):
         if label.startswith('B-'):
             try:
                 entity2count[label[2:]] += 1
+                entity2value[label[2:]].append(TOKENS[i])
             except:
                 entity2count[label[2:]] = 1
+                entity2value[label[2:]] = [TOKENS[i]]
             
             countOfEntity = entity2count[label[2:]] - 1
             arg = arg_value.replace('#',str(label[2:]).upper()).replace('*',str(countOfEntity))
@@ -120,6 +126,19 @@ def PREPROCESS(new_tokens, new_labels, INPUT):
 
     for k, v in arg2token.items():
         INPUT = INPUT.replace(k, v)
+    
+    def pretty(d, indent=0):
+       for key, value in d.items():
+            print('\t' * indent + str(key))
+            if isinstance(value, dict):
+                pretty(value, indent+1)
+            else:
+                print('\t' * (indent+1) + str(value))
+    pretty(arg2token)
+    print()
+    print(entity2value)
+    print()
+    print(INPUT)
 
     # print(og_tokens)
     return INPUT
@@ -169,7 +188,7 @@ def GENERATE_SQL(INPUT):
     
     output = t5_tokenizer.decode(output[0], skip_special_tokens=True)
     OUTPUT= output.replace("<pad>", "").replace("</s>", "").replace("[", "<").replace("]", ">").strip()
-    # print(output)
+    print(OUTPUT)
 
     return OUTPUT
 
@@ -178,6 +197,7 @@ def GENERATE_SQL_PL(INPUT):
 
     inferencer = Inferencer()   
     output = inferencer(INPUT)
+    print(output)
 
     return output
 
@@ -195,21 +215,33 @@ if __name__ == '__main__':
     parser.add_argument("--input", default='Count of patients with paracetamol and brufen', type=str, required=True,
                         help="valid values: Any string")
     global_args = parser.parse_args()
-
-
+    print('#######################')
+    print('PIPELINE')
+    print('#######################')
     ORIGINAL =global_args.input
     INPUT = ORIGINAL
 
+    print('NER PHASE')
+    print('-----------------------')
     tokens_, labels_ = NER(INPUT)
+    print('-----------------------')
+    print('PREPROCESSING PHASE')
+    print('-----------------------')
     INPUT = PREPROCESS(tokens_, labels_, INPUT)
-    
+    print('-----------------------')
+    print('SQL GENERATION PHASE')
+    print('-----------------------')
     if PYTORCH_LIGHTNING == True:
         OUTPUT = GENERATE_SQL_PL(INPUT)
     else:
         OUTPUT = GENERATE_SQL(INPUT)
 
+    print('#######################')
     print('Natural Language Input: {}'.format(ORIGINAL))
+    print()
+    print()
     print('SQL Query Generated: {}'.format(OUTPUT))
+    print('#######################')
 
 
 script = """

@@ -200,3 +200,37 @@ python pipeline.py \
 ├── README.md
 └── requirements.txt
 ```
+### Example Output
+```
+#######################
+PIPELINE
+#######################
+NER PHASE
+-----------------------
+O       Count
+O       of
+O       patients
+O       with
+B-Drug  paracetamol
+O       and
+B-Drug  brufen
+-----------------------
+PREPROCESSING PHASE
+-----------------------
+paracetamol
+        <ARG-DRUG><0>
+brufen
+        <ARG-DRUG><1>
+
+Count of patients with <ARG-DRUG><0> and <ARG-DRUG><1>
+-----------------------
+SQL GENERATION PHASE
+-----------------------
+SELECT COUNT( DISTINCT dr1.person_id) FROM ((<SCHEMA>.drug_exposure dr1 JOIN <DRUG-TEMPLATE><ARG-DRUG><0> ON dr1.drug_concept_id=concept_id) JOIN (<SCHEMA>.drug_exposure dr2 JOIN <DRUG-TEMPLATE><ARG-DRUG><1> ON dr2.drug_concept_id=concept_id) ON dr1.person_id=dr2.person_id);
+#######################
+Natural Language Input: Count of patients with paracetamol and brufen
+
+
+SQL Query Generated: SELECT COUNT( DISTINCT dr1.person_id) FROM ((<SCHEMA>.drug_exposure dr1 JOIN <DRUG-TEMPLATE><ARG-DRUG><0> ON dr1.drug_concept_id=concept_id) JOIN (<SCHEMA>.drug_exposure dr2 JOIN <DRUG-TEMPLATE><ARG-DRUG><1> ON dr2.drug_concept_id=concept_id) ON dr1.person_id=dr2.person_id);
+#######################
+```
