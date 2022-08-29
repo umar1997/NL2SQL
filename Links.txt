@@ -100,14 +100,18 @@ MASKED LANGAUGE MODELLING
  	https://huggingface.co/docs/transformers/training
 
  	https://colab.research.google.com/github/huggingface/notebooks/blob/master/examples/language_modeling.ipynb#scrollTo=HFASsisvIrIb
+	
+	https://github.com/huggingface/transformers/tree/main/examples/pytorch
 
  	https://towardsdatascience.com/masked-language-modelling-with-bert-7d49793e5d2c
 
  	https://colab.research.google.com/github/huggingface/notebooks/blob/master/course/chapter7/section3_pt.ipynb#scrollTo=sNa2Lr9WifWX
 
  	https://morioh.com/p/814ec71da7ff
+	
+	https://discuss.huggingface.co/t/roberta-mlm-fine-tuning/1330/2 , https://github.com/huggingface/transformers/issues/2691
 
-	https://www.youtube.com/results?search_query=MLM+for+fine+tuning
+	https://www.youtube.com/results?search_query=MLM+for+fine+tuning , https://www.youtube.com/watch?v=5Bi3vQE2Hak&ab_channel=TheArtificialGuy
 
 	https://huggingface.co/docs/transformers/tasks/language_modeling
 
